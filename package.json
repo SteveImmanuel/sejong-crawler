@@ -1,0 +1,23 @@
+{
+  "name": "sejong-crawler",
+  "version": "0.1.0",
+  "description": "Announcement crawler for sejong board website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteveImmanuel/sejong-crawler.git"
+  },
+  "author": "SteveImmanuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SteveImmanuel/sejong-crawler/issues"
+  },
+  "homepage": "https://github.com/SteveImmanuel/sejong-crawler#readme",
+  "dependencies": {
+    "express": "^4.18.0",
+    "puppeteer": "^13.7.0"
+  }
+}
