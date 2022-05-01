@@ -14,16 +14,21 @@ const postRequest = async (url, body, config = {}) => axios.post(
 );
 
 const translate = async (text, sourceLang = 'ko', targetLang = 'en') => {
-  const result = await postRequest(
-    constant.translator.apiTranslateUrl,
-    {
-      source: sourceLang,
-      target: targetLang,
-      text,
-    },
-  );
+  try {
+    const result = await postRequest(
+      constant.translator.apiTranslateUrl,
+      {
+        source: sourceLang,
+        target: targetLang,
+        text,
+      },
+    );
 
-  return result?.data?.message?.result?.translatedText;
+    return [result?.data?.message?.result?.translatedText, true];
+  } catch (error) {
+    console.error(error);
+    return [text, false];
+  }
 };
 
 module.exports = { translate };
