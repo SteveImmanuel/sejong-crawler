@@ -1,4 +1,4 @@
-const parseTextBoard = async (browserPage) => browserPage.$eval(
+const parseTextBoard = (browserPage) => browserPage.$eval(
   '.text-board',
   (textBoard) => {
     const rawAnnouncements = Array.from(textBoard.querySelectorAll('tbody > tr'));
@@ -19,13 +19,13 @@ const parseTextBoard = async (browserPage) => browserPage.$eval(
 const parseAnnouncement = async (browserPage) => browserPage.$eval(
   '.text-view-board',
   (textViewBoard) => {
-    const title = textViewBoard.querySelector('td.subject-value').innerHTML.trim();
-    const writer = textViewBoard.querySelector('td.writer').innerHTML.trim();
-    const date = `${textViewBoard.querySelector('td.date').innerHTML.trim()} KST`;
-    const rawContent = textViewBoard.querySelector('td.content > div').innerHTML;
+    const title = textViewBoard.querySelector('td.subject-value').innerText.trim();
+    const writer = textViewBoard.querySelector('td.writer').innerText.trim();
+    const date = `${textViewBoard.querySelector('td.date').innerText.trim()} KST`;
+    const content = textViewBoard.querySelector('td.content > div').innerText;
 
     return {
-      title, writer, date, rawContent,
+      title, writer, date, content,
     };
   },
 );
