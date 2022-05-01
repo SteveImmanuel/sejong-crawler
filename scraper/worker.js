@@ -21,7 +21,6 @@ const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
     await browserPage.waitForSelector('.text-board');
     let announcementList = await parseTextBoard(browserPage);
     announcementList = announcementList.slice(0, concurrencyLimit);
-
     await browserPage.close();
 
     const detailedAnnouncements = announcementList.map(async (announcement) => {
@@ -30,10 +29,14 @@ const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
       await newPage.waitForSelector('.text-view-board');
       const result = await parseAnnouncement(newPage);
       await newPage.close();
-      return { id: announcement.id, link: announcement.link, ...result };
+      return result;
     });
 
-    const result = await Promise.all(detailedAnnouncements);
+    let result = await Promise.all(detailedAnnouncements);
+    result = result.filter((value, index, self) => {
+      const duplicateIndex = self.findIndex((t) => (t.id === value.id));
+      return index === duplicateIndex;
+    });
     await browser.close();
     return result;
   } catch (error) {
