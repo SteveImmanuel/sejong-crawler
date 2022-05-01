@@ -14,16 +14,26 @@ const buildUrl = (topicId, page = 1) => {
 
 const scrap = async (topicId, page = 1) => {
   const browser = await startBrowser();
-  const browserPage = await browser.newPage();
+  const browserPage = (await browser.pages())[0];
 
   await browserPage.goto(buildUrl(topicId, page));
   await browserPage.waitForSelector('.text-board');
-  const annoucementList = await parseTextBoard(browserPage);
+  const announcementList = await parseTextBoard(browserPage);
 
-  await browserPage.goto(annoucementList[0].link);
-  await browserPage.waitForSelector('.text-view-board');
-  const announcement = await parseAnnouncement(browserPage);
-  console.log(announcement);
+  await browserPage.close();
+
+  const detailedAnnouncements = announcementList.map(async (announcement) => {
+    const newPage = await browser.newPage();
+    await newPage.goto(announcement.link);
+    await newPage.waitForSelector('.text-view-board');
+    const result = await parseAnnouncement(newPage);
+    await newPage.close();
+    return result;
+  });
+
+  const result = await Promise.all(detailedAnnouncements);
+  await browser.close();
+  return result;
 };
 
 module.exports = { scrap };
