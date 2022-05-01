@@ -55,4 +55,5 @@ class Database {
   }
 }
 
-module.exports = Database;
+const dbInstance = new Database('./sejong-crawler.db');
+module.exports = dbInstance;

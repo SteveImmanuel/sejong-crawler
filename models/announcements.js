@@ -1,5 +1,7 @@
+const dbInstance = require('../db');
+
 class Annoucements {
-  constructor(dbInstance) {
+  constructor() {
     this.dbInstance = dbInstance;
     this.tableName = 'announcements';
     this.createTable();
@@ -15,7 +17,7 @@ class Annoucements {
   }
 
   async getAnnouncementById(id) {
-    this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
+    return this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
   }
 
   async addAnnouncement(id, title, link, date = '', writer = '') {
@@ -26,4 +28,5 @@ class Annoucements {
   }
 }
 
-module.exports = Annoucements;
+const announcementModel = new Annoucements();
+module.exports = announcementModel;

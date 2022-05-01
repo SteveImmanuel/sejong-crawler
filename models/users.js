@@ -1,5 +1,7 @@
+const dbInstance = require('../db');
+
 class Users {
-  constructor(dbInstance) {
+  constructor() {
     this.dbInstance = dbInstance;
     this.tableName = 'users';
     this.createTable();
@@ -9,15 +11,16 @@ class Users {
     return this.dbInstance.run(`CREATE TABLE IF NOT EXISTS ${this.tableName} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
+      lang TEXT DEFAULT en,
       isSubscribed BOOL NOT NULL DEFAULT 1)`);
   }
 
   async getUserById(id) {
-    this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
+    return this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
   }
 
   async getAllSubscribedUsers() {
-    return this.db.getAll(`SELECT * FROM ${this.tableName} WHERE isSubscribed = true`);
+    return this.dbInstance.getAll(`SELECT * FROM ${this.tableName} WHERE isSubscribed = true`);
   }
 
   async addUser(id, name) {
@@ -28,11 +31,12 @@ class Users {
   }
 
   async updateSubscription({ id, isSubscribed }) {
-    return this.db.run(
+    return this.dbInstance.run(
       `UPDATE ${this.tableName} SET isSubscribed = ? WHERE id = ?`,
       [isSubscribed, id],
     );
   }
 }
 
-module.exports = Users;
+const userModel = new Users();
+module.exports = userModel;
