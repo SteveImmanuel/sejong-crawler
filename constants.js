@@ -20,6 +20,17 @@ module.exports = {
   bot: {
     telegram: {
       token: process.env.TELEGRAM_BOT_TOKEN,
+      maxLength: 4096,
+    },
+    messages: {
+      start: 'Send me /subscribe to get started!',
+      successSubscribe: 'Successfully subscribed. I will notify you when there is a new announcement! 😊',
+      alreadySubscribe: 'You have already subscribed 👍',
+      successUnsubscribe: 'Successfully unsubscribed. I will not notify you anymore 😔',
+      failUnsubscribe: 'You never subscribed in the first place! 😡',
+      help: 'You can use the following commands:\n/subscribe - Get notified of new announcements\n/unsubscribe - Remove notifications of new announcements\n/help - Show all commands\n/about - Explain how this bot works\n/contribute - Show the contribution guide',
+      about: 'I watch the announcements from the Sejong University Board periodically.\nEverytime there is a new announcement, I will translate it to English and send it to all subscribed users.',
+      contribute: 'This bot is created by @steve_immanuel. If you have any idea/feature you want to implement, you can contribute to this bot by sending me a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler',
     },
   },
 };
