@@ -29,8 +29,7 @@ bot.onText(/\/unsubscribe/, async (msg) => {
   try {
     const chatId = msg.chat.id;
     const user = await userModel.getUserById(chatId);
-
-    if (user) {
+    if (user.isSubscribed) {
       await userModel.updateSubscription(chatId, false);
       await bot.sendMessage(chatId, constant.bot.messages.successUnsubscribe);
     } else {
