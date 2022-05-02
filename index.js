@@ -44,7 +44,8 @@ const crawlAnnouncement = async () => {
         await Promise.all(users.map(async (user) => {
           try {
             let announcementContent = transText;
-            if (transText.length > constant.bot.telegram.maxLength) {
+            // 200 is the length of the header
+            if (transText.length > constant.bot.telegram.maxLength - 200) {
               announcementContent = 'Announcement is too long to be sent 😥, please check the announcement link.';
             }
 
@@ -54,10 +55,9 @@ const crawlAnnouncement = async () => {
             }
             await bot.sendMessage(
               user.id,
-              `Title: <b>${transTitle}</b>\nOriginal Announcement: <a href='${announcement.link}'>Tap here</a>\n${additionalMessage}`,
+              `Title: <b>${transTitle}</b>\nLink: <a href='${announcement.link}'>Tap here</a>\n${additionalMessage}\n________________________________________\n${announcementContent}`,
               { parse_mode: 'HTML' },
             );
-            await bot.sendMessage(user.id, announcementContent);
           } catch (error) {
             console.error(error);
           }

@@ -26,7 +26,8 @@ const translate = async (text, sourceLang = 'ko', targetLang = 'en') => {
 
     return [result?.data?.message?.result?.translatedText, true];
   } catch (error) {
-    console.error(error);
+    console.error('Error in API call to translator');
+    console.error(error?.data?.errorMessage);
     return [text, false];
   }
 };
