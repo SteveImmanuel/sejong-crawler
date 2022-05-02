@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  crawler:
+    image: steveimm/sejong-crawler:latest
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./sejong-crawler.db:/app/sejong-crawler/sejong-crawler.db
