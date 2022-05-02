@@ -16,5 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install dev dependencies
+        run: npm install --only-dev
+
       - name: Run lint based on eslint config
         run: npm run lint
