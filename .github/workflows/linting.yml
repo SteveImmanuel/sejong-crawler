@@ -1,0 +1,20 @@
+name: Linting
+
+on:
+  push:
+    branches:
+      - master
+      - ci-cd
+    tags-ignore:
+      - "*"
+
+jobs:
+  check-code-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run lint based on eslint config
+        run: npm run lint
