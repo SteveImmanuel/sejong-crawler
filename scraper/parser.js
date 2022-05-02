@@ -29,7 +29,7 @@ const parseAnnouncement = async (browserPage) => {
       const title = textViewBoard.querySelector('td.subject-value').innerText.trim();
       const writer = textViewBoard.querySelector('td.writer').innerText.trim();
       const date = `${textViewBoard.querySelector('td.date').innerText.trim()} KST`;
-      const content = textViewBoard.querySelector('td.content > div').innerText;
+      const content = textViewBoard.querySelector('td.content > div').innerText.trim();
 
       return {
         title, writer, date, content,

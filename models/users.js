@@ -30,7 +30,7 @@ class Users {
     );
   }
 
-  async updateSubscription({ id, isSubscribed }) {
+  async updateSubscription(id, isSubscribed) {
     return this.dbInstance.run(
       `UPDATE ${this.tableName} SET isSubscribed = ? WHERE id = ?`,
       [isSubscribed, id],
