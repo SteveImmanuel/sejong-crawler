@@ -13,8 +13,17 @@ const buildUrl = (topicId, page = 1) => {
 };
 
 const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
+  let browser;
+  let result;
+
   try {
-    const browser = await startBrowser();
+    browser = await startBrowser();
+  } catch (error) {
+    console.error('Failed launching browser');
+    return [];
+  }
+
+  try {
     const browserPage = (await browser.pages())[0];
 
     await browserPage.goto(buildUrl(topicId, page));
@@ -27,22 +36,24 @@ const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
       const newPage = await browser.newPage();
       await newPage.goto(announcement.link);
       await newPage.waitForSelector('.text-view-board');
-      const result = await parseAnnouncement(newPage);
+      const parsedAnnouncement = await parseAnnouncement(newPage);
       await newPage.close();
-      return result;
+      return parsedAnnouncement;
     });
 
-    let result = await Promise.all(detailedAnnouncements);
+    result = await Promise.all(detailedAnnouncements);
     result = result.filter((value, index, self) => {
       const duplicateIndex = self.findIndex((t) => (t.id === value.id));
       return index === duplicateIndex;
     });
-    await browser.close();
-    return result;
   } catch (error) {
     console.error(error);
-    return [];
+    result = [];
+  } finally {
+    await browser.close();
   }
+
+  return result;
 };
 
 module.exports = { scrap };
