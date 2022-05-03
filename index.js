@@ -55,7 +55,7 @@ const crawlAnnouncement = async () => {
             }
             await bot.sendMessage(
               user.id,
-              `Title: <b>${transTitle}</b>\nLink: <a href='${announcement.link}'>Tap here</a>\n${additionalMessage}${announcementContent}`,
+              `<b>${transTitle}</b>\n<a href='${announcement.link}'>Original Link</a>\n${additionalMessage}\n${announcementContent}`,
               { parse_mode: 'HTML' },
             );
           } catch (error) {
