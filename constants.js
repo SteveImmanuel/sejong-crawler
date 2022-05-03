@@ -33,4 +33,7 @@ module.exports = {
       contribute: 'This bot is created by @steve_immanuel. If you have any idea/feature you want to implement, you can contribute to this bot by sending me a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler',
     },
   },
+  system: {
+    crawlInterval: process.env.CRAWL_INTERVAL,
+  },
 };

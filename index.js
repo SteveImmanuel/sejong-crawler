@@ -55,7 +55,7 @@ const crawlAnnouncement = async () => {
             }
             await bot.sendMessage(
               user.id,
-              `Title: <b>${transTitle}</b>\nLink: <a href='${announcement.link}'>Tap here</a>\n${additionalMessage}\n________________________________________\n${announcementContent}`,
+              `Title: <b>${transTitle}</b>\nLink: <a href='${announcement.link}'>Tap here</a>\n${additionalMessage}${announcementContent}`,
               { parse_mode: 'HTML' },
             );
           } catch (error) {
@@ -69,7 +69,7 @@ const crawlAnnouncement = async () => {
   console.timeEnd('Total Time of Crawling Announcement');
 };
 
-// schedule task to run every 30 minutes
-cron.schedule('*/30 * * * *', async () => {
+// schedule task to run periodically
+cron.schedule(`*/${constant.system.crawlInterval} * * * *`, async () => {
   await crawlAnnouncement();
 });
