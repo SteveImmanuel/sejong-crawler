@@ -1,9 +1,11 @@
 const { startBrowser } = require('./browser');
-const { parseTextBoard, parseAnnouncement } = require('./parser');
+const {
+  parseTextBoard, parseAnnouncement, parseBoardTable, parseGraduateAnnouncement,
+} = require('./parser');
 const constant = require('../constants');
 
-const buildUrl = (topicId, page = 1) => {
-  const { apiUrl } = constant.scraper;
+const buildUgradApiUrl = (topicId, page = 1) => {
+  const { apiUrl } = constant.scraper.general;
   const params = new URLSearchParams({
     bbsConfigFK: topicId,
     currentPage: page,
@@ -12,7 +14,7 @@ const buildUrl = (topicId, page = 1) => {
   return `${apiUrl}?${params.toString()}`;
 };
 
-const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
+const scrap = async (apiUrl, scrappedIds, concurrencyLimit = 10, isGraduate = false) => {
   let browser;
   let result;
 
@@ -23,20 +25,28 @@ const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
     return [];
   }
 
+  let parseMainPage;
+  let parseDetailAnnouncement;
+  if (isGraduate) {
+    parseMainPage = parseBoardTable;
+    parseDetailAnnouncement = parseGraduateAnnouncement;
+  } else {
+    parseMainPage = parseTextBoard;
+    parseDetailAnnouncement = parseAnnouncement;
+  }
+
   try {
     const browserPage = (await browser.pages())[0];
 
-    await browserPage.goto(buildUrl(topicId, page));
-    await browserPage.waitForSelector('.text-board');
-    let announcementList = await parseTextBoard(browserPage);
+    await browserPage.goto(apiUrl);
+    let announcementList = await parseMainPage(browserPage);
+    announcementList = announcementList.filter((ann) => !scrappedIds.has(ann.id));
     announcementList = announcementList.slice(0, concurrencyLimit);
     await browserPage.close();
 
     const detailedAnnouncements = announcementList.map(async (announcement) => {
       const newPage = await browser.newPage();
-      await newPage.goto(announcement.link);
-      await newPage.waitForSelector('.text-view-board');
-      const parsedAnnouncement = await parseAnnouncement(newPage);
+      const parsedAnnouncement = await parseDetailAnnouncement(newPage, announcement);
       await newPage.close();
       return parsedAnnouncement;
     });
@@ -56,4 +66,7 @@ const scrap = async (topicId, page = 1, concurrencyLimit = 10) => {
   return result;
 };
 
-module.exports = { scrap };
+// scrap(constant.scraper.graduate.apiUrl.information, new Set(), 10, true);
+scrap(buildUgradApiUrl(335), new Set(), 10, false);
+
+module.exports = { scrap, buildUgradApiUrl };

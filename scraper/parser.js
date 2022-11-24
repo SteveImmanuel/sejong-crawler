@@ -1,43 +1,92 @@
 const url = require('url');
 
-const parseTextBoard = (browserPage) => browserPage.$eval(
-  '.text-board',
-  (textBoard) => {
-    const rawAnnouncements = Array.from(textBoard.querySelectorAll('tbody > tr'));
+const parseTextBoard = async (browserPage) => {
+  await browserPage.waitForSelector('.text-board');
 
-    return rawAnnouncements.map((announcement) => {
-      const subject = announcement.querySelector('.subject > a');
+  return browserPage.$eval(
+    '.text-board',
+    (textBoard) => {
+      const rawAnnouncements = Array.from(textBoard.querySelectorAll('tbody > tr'));
 
-      const parsed = {
-        id: announcement.querySelector('.index').innerHTML,
-        title: subject.innerHTML.trim(),
-        link: subject.href,
-      };
-      return parsed;
-    });
-  },
-);
+      return rawAnnouncements.map((announcement) => {
+        const subject = announcement.querySelector('.subject > a');
 
-const parseAnnouncement = async (browserPage) => {
-  const link = browserPage.url();
-  const parsedUrl = url.parse(link, true);
-  const id = parseInt(parsedUrl.query.pkid, 10);
+        const parsed = {
+          id: `ugrad-${announcement.querySelector('.index').innerHTML}`,
+          title: subject.innerHTML.trim(),
+          link: subject.href,
+        };
+        return parsed;
+      });
+    },
+  );
+};
+
+const parseAnnouncement = async (browserPage, announcement) => {
+  await browserPage.goto(announcement.link);
+  await browserPage.waitForSelector('.text-view-board');
 
   const result = await browserPage.$eval(
     '.text-view-board',
     (textViewBoard) => {
       const title = textViewBoard.querySelector('td.subject-value').innerText.trim();
-      const writer = textViewBoard.querySelector('td.writer').innerText.trim();
-      const date = `${textViewBoard.querySelector('td.date').innerText.trim()} KST`;
       const content = textViewBoard.querySelector('td.content > div').innerText.trim();
 
       return {
-        title, writer, date, content,
+        title, content,
       };
     },
   );
 
-  return { id, link, ...result };
+  return { id: announcement.id, link: announcement.link, ...result };
 };
 
-module.exports = { parseTextBoard, parseAnnouncement };
+const parseBoardTable = async (browserPage) => {
+  await browserPage.waitForSelector('.board-table');
+
+  const announcements = await browserPage.$eval(
+    '.board-table',
+    (tableWrap) => {
+      const rawAnnouncements = Array.from(tableWrap.querySelectorAll('tbody > tr'));
+      return rawAnnouncements.map((announcement) => {
+        const subject = announcement.querySelector('.title > a');
+
+        const parsed = {
+          title: subject.innerText.trim(),
+          link: subject.href,
+        };
+        return parsed;
+      });
+    },
+  );
+  return announcements.map((ann) => {
+    const params = url.parse(ann.link, true);
+    return {
+      id: `grad-${params.query.articleNo}`,
+      ...ann,
+    };
+  });
+};
+
+const parseGraduateAnnouncement = async (browserPage, announcement) => {
+  await browserPage.goto(announcement.link);
+  await browserPage.waitForSelector('.board_view');
+
+  const result = await browserPage.$eval(
+    '.board_view',
+    (boardView) => {
+      const title = boardView.querySelector('.view_tit > p').innerText.trim();
+      const content = boardView.querySelector('.cont_inner').innerText.trim();
+
+      return {
+        title, content,
+      };
+    },
+  );
+
+  return { id: announcement.id, link: announcement.link, ...result };
+};
+
+module.exports = {
+  parseTextBoard, parseAnnouncement, parseBoardTable, parseGraduateAnnouncement,
+};
