@@ -36,7 +36,7 @@ const translate = async (text, sourceLang = 'ko', targetLang = 'en') => {
   }
 };
 
-const translateUnl = async (text, sourceLang = 'ko', targetLang = 'en', timeout = 2000) => {
+const translateUnl = async (text, targetLang = 'en', timeout = 2000) => {
   let browser;
   let result;
 
@@ -50,7 +50,7 @@ const translateUnl = async (text, sourceLang = 'ko', targetLang = 'en', timeout 
   try {
     const browserPage = (await browser.pages())[0];
     const formattedText = convertToUrlEncoding(fixNewline(text));
-    await browserPage.goto(`https://papago.naver.com/?sk=${sourceLang}&tk=${targetLang}&st=${formattedText}`);
+    await browserPage.goto(`https://papago.naver.com/?sk=auto&tk=${targetLang}&st=${formattedText}`);
     await browserPage.waitForTimeout(timeout);
     result = await browserPage.waitForSelector('#txtTarget');
     result = await result.evaluate((el) => {
