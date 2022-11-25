@@ -35,7 +35,7 @@ const translate = async (text, sourceLang = 'ko', targetLang = 'en') => {
   }
 };
 
-const translateUnl = async (browser, text, targetLang = 'en', timeout = 2000) => {
+const translateUnl = async (browser, text, targetLang = 'en', timeout = 3000) => {
   let browserPage;
 
   try {
@@ -55,16 +55,15 @@ const translateUnl = async (browser, text, targetLang = 'en', timeout = 2000) =>
 
       await browserPage.waitForTimeout(timeout);
       await browserPage.keyboard.type(result);
-      await browserPage.waitForTimeout(timeout);
-
       result = await browserPage.waitForSelector('#txtTarget');
+      await browserPage.waitForTimeout(timeout);
       result = await result.evaluate((el) => {
         let translated = el.innerHTML;
         translated = translated.replace(/&nbsp;/g, ' ').replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
         return translated;
       });
+      await browserPage.waitForTimeout(timeout);
     }
-    // await browserPage.waitForTimeout(100000);
   } catch (error) {
     success = false;
     console.error(error);
