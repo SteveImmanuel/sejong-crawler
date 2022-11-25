@@ -31,7 +31,14 @@ class Subscriptions {
     return this.dbInstance.getAll(`SELECT topicId FROM ${this.tableName} WHERE userId = ?`, [userId]);
   }
 
-  async deleteUserSubscriptionsByTopicId(userId, topicId) {
+  async getSubscriptionsByUserIdAndTopicId(userId, topicId) {
+    return this.dbInstance.get(
+      `SELECT * FROM ${this.tableName} WHERE userId = ? AND topicId = ?`,
+      [userId, topicId],
+    );
+  }
+
+  async deleteSubscription(userId, topicId) {
     return this.dbInstance.run(
       `DELETE FROM ${this.tableName} WHERE userId = ? AND topicId = ?`,
       [userId, topicId],
