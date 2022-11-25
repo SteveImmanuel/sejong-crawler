@@ -13,9 +13,15 @@ module.exports = {
       },
     },
     graduate: {
-      apiUrl: {
-        information: 'https://graduate.sejong.ac.kr/graduate/information/notice.do',
-        others: 'https://graduate.sejong.ac.kr/graduate/information/etc-notice.do',
+      topics: {
+        987: {
+          apiUrl: 'https://graduate.sejong.ac.kr/graduate/information/notice.do',
+          name: 'General Notice (공지) - Graduate',
+        },
+        988: {
+          apiUrl: 'https://graduate.sejong.ac.kr/graduate/information/etc-notice.do',
+          name: 'Employment (취업) - Graduate',
+        },
       },
     },
   },
@@ -31,17 +37,30 @@ module.exports = {
       maxLength: 4096,
     },
     messages: {
-      start: 'Send me /subscribe to get started!',
-      successSubscribe: 'Successfully subscribed. I will notify you when there is a new announcement! 😊',
-      alreadySubscribe: 'You have already subscribed 👍',
-      successUnsubscribe: 'Successfully unsubscribed. I will not notify you anymore 😔',
-      failUnsubscribe: 'You never subscribed in the first place! 😡',
+      start: '🫡 Ok, I am ready. You can send me:\n/status to get your subscription details\n/topics to update the announcement topics you want to subscribe to\n/lang to select your preferred language',
+      topics: '🫠 Select all the topics you want to subscribe to:',
       help: 'You can use the following commands:\n/subscribe - Get notified of new announcements\n/unsubscribe - Remove notifications of new announcements\n/help - Show all commands\n/about - Explain how this bot works\n/contribute - Show the contribution guide',
-      about: 'I watch the announcements from the Sejong University Board periodically.\nEverytime there is a new announcement, I will translate it to English and send it to all subscribed users.',
-      contribute: 'This bot is created by @steve_immanuel. If you have any idea/feature you want to implement, you can contribute to this bot by sending me a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler',
+      about: '😎 I monitor the announcements from the Sejong University Board periodically.\nEverytime there is a new announcement, I will translate it to your preferred language and send it to you',
+      contribute: 'This bot is created by @steve_immanuel 👋. If you have any idea/feature you want to implement, you can contribute to this bot by sending him a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler',
+      langChoose: '🌎 Select one of the languages below:',
+      langUpdate: 'Language successfully selected 👌',
+      topicUpdate: 'Topics successfully updated 👌',
+      askRegister: 'You have not registered yet. Please send me /start 🥺',
+      statusLang: 'Language:',
+      statusTopics: 'Below are the topics you are subscribed to:',
+      noSubscription: 'You are not subscribed to any topics 😓\nPlease use /topics to subscribe',
     },
   },
   system: {
     crawlInterval: process.env.CRAWL_INTERVAL,
+  },
+  languages: {
+    ko: '🇰🇷 Korean',
+    en: '🇬🇧 English',
+    id: '🇲🇨 Indonesian',
+    vi: '🇻🇳 Vietnamese',
+    'zn-CN': '🇨🇳 Chinese',
+    fr: '🇫🇷 France',
+    ja: '🇯🇵 Japanese',
   },
 };
