@@ -9,10 +9,9 @@ class Annoucements {
 
   async createTable() {
     return this.dbInstance.run(`CREATE TABLE IF NOT EXISTS ${this.tableName} (
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      announcementId TEXT,
       title TEXT,
-      date TEXT,
-      writer TEXT,
       link TEXT)`);
   }
 
@@ -20,11 +19,15 @@ class Annoucements {
     return this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
   }
 
-  async addAnnouncement(id, title, link, date = '', writer = '') {
+  async addAnnouncement(announcementId, title, link) {
     return this.dbInstance.run(
-      `INSERT INTO ${this.tableName} (id, title, date, writer, link) VALUES (?, ?, ?, ?, ?)`,
-      [id, title, date, writer, link],
+      `INSERT INTO ${this.tableName} (announcementId, title, link) VALUES (?, ?, ?)`,
+      [announcementId, title, link],
     );
+  }
+
+  async getAllAnnoucementIds() {
+    return this.dbInstance.getAll(`SELECT announcementId FROM ${this.tableName}`);
   }
 }
 
