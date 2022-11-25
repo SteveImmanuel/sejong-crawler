@@ -50,20 +50,21 @@ const translateUnl = async (browser, text, targetLang = 'en', timeout = 2000) =>
 
   try {
     result = fixNewline(text);
-    await browserPage.goto(`https://papago.naver.com/?sk=auto&tk=${targetLang}`);
+    if (targetLang !== 'ko') {
+      await browserPage.goto(`https://papago.naver.com/?sk=auto&tk=${targetLang}`);
 
-    await browserPage.waitForTimeout(timeout);
-    await browserPage.keyboard.type(result);
-    await browserPage.waitForTimeout(timeout);
+      await browserPage.waitForTimeout(timeout);
+      await browserPage.keyboard.type(result);
+      await browserPage.waitForTimeout(timeout);
 
-    result = await browserPage.waitForSelector('#txtTarget');
-    result = await result.evaluate((el) => {
-      let translated = el.innerHTML;
-      translated = translated.replace(/&nbsp;/g, ' ').replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
-      return translated;
-    });
-
-    await browserPage.waitForTimeout(100000);
+      result = await browserPage.waitForSelector('#txtTarget');
+      result = await result.evaluate((el) => {
+        let translated = el.innerHTML;
+        translated = translated.replace(/&nbsp;/g, ' ').replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+        return translated;
+      });
+    }
+    // await browserPage.waitForTimeout(100000);
   } catch (error) {
     success = false;
     console.error(error);
