@@ -63,7 +63,7 @@ bot.onText(/\/status/, async (msg) => {
           response += `\n- ${topic}`;
         });
       } else {
-        response += constant.bot.messages.statusNoSubscriptions;
+        response += constant.bot.messages.noSubscription;
       }
       await bot.sendMessage(chatId, response, { parse_mode: 'HTML' });
     } else {
