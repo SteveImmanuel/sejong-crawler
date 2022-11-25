@@ -14,7 +14,7 @@ const buildUgradApiUrl = (topicId, page = 1) => {
   return `${apiUrl}?${params.toString()}`;
 };
 
-const scrap = async (apiUrl, scrappedIds, concurrencyLimit = 10, isGraduate = false) => {
+const scrap = async (apiUrl, scrappedIds, isGraduate = false, concurrencyLimit = 10) => {
   let browser;
   let result;
 
@@ -67,6 +67,6 @@ const scrap = async (apiUrl, scrappedIds, concurrencyLimit = 10, isGraduate = fa
 };
 
 // scrap(constant.scraper.graduate.apiUrl.information, new Set(), 10, true);
-scrap(buildUgradApiUrl(335), new Set(), 10, false);
+// scrap(buildUgradApiUrl(335), new Set(), 10, false);
 
 module.exports = { scrap, buildUgradApiUrl };
