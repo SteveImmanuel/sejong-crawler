@@ -55,5 +55,5 @@ class Database {
   }
 }
 
-const dbInstance = new Database('./sejong-crawler.db');
+const dbInstance = new Database('./sejong-crawler.sqlite');
 module.exports = dbInstance;
