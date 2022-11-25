@@ -28,6 +28,15 @@ class Users {
   async updateLang(id, lang) {
     return this.dbInstance.run(`UPDATE ${this.tableName} SET lang = ? WHERE id = ?`, [lang, id]);
   }
+
+  async getUserByTopicId(topicId) {
+    return this.dbInstance.getAll(
+      `SELECT users.id, users.lang FROM ${this.tableName}
+      LEFT JOIN subscriptions ON subscriptions.userId = users.id
+      WHERE subscriptions.topicId = ?`,
+      [topicId],
+    );
+  }
 }
 
 const userModel = new Users();

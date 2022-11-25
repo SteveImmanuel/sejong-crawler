@@ -12,17 +12,18 @@ class Annoucements {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       announcementId TEXT,
       title TEXT,
-      link TEXT)`);
+      link TEXT,
+      topicId INTEGER)`);
   }
 
   async getAnnouncementById(id) {
     return this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
   }
 
-  async addAnnouncement(announcementId, title, link) {
+  async addAnnouncement(announcementId, title, link, topicId) {
     return this.dbInstance.run(
-      `INSERT INTO ${this.tableName} (announcementId, title, link) VALUES (?, ?, ?)`,
-      [announcementId, title, link],
+      `INSERT INTO ${this.tableName} (announcementId, title, link, topicId) VALUES (?, ?, ?, ?)`,
+      [announcementId, title, link, topicId],
     );
   }
 
