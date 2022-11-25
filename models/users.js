@@ -11,30 +11,22 @@ class Users {
     return this.dbInstance.run(`CREATE TABLE IF NOT EXISTS ${this.tableName} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
-      lang TEXT DEFAULT en,
-      isSubscribed BOOL NOT NULL DEFAULT 1)`);
+      lang TEXT DEFAULT en)`);
   }
 
   async getUserById(id) {
     return this.dbInstance.get(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
   }
 
-  async getAllSubscribedUsers() {
-    return this.dbInstance.getAll(`SELECT * FROM ${this.tableName} WHERE isSubscribed = true`);
-  }
-
-  async addUser(id, name) {
+  async addUser(id, name, lang = 'en') {
     return this.dbInstance.run(
-      `INSERT INTO ${this.tableName} (id, name) VALUES (?, ?)`,
-      [id, name],
+      `INSERT INTO ${this.tableName} (id, name, lang) VALUES (?, ?, ?)`,
+      [id, name, lang],
     );
   }
 
-  async updateSubscription(id, isSubscribed) {
-    return this.dbInstance.run(
-      `UPDATE ${this.tableName} SET isSubscribed = ? WHERE id = ?`,
-      [isSubscribed, id],
-    );
+  async updateLang(id, lang) {
+    return this.dbInstance.run(`UPDATE ${this.tableName} SET lang = ? WHERE id = ?`, [lang, id]);
   }
 }
 
