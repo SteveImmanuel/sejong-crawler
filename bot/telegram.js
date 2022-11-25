@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const userModel = require('../models/users');
 const subscriptionModel = require('../models/subscriptions');
 const constant = require('../constants');
-const { idToTopic, topicToId, topics } = require('../utils/topics');
+const { idToTopic, topics } = require('../utils/topics');
 const { idToLang } = require('../utils/languages');
 const { createLangIKM, createTopicsIKM } = require('../utils/bot');
 
@@ -39,7 +39,7 @@ bot.onText(/\/start/, async (msg) => {
 
     if (!user) {
       await userModel.addUser(msg.chat.id, `${msg.chat.first_name} ${msg.chat.last_name}`);
-      await subscriptionModel.addSubscription(msg.chat.id, topicToId.get(topics[0]));
+      await subscriptionModel.addSubscription(msg.chat.id, topics[0][0]);
     }
     await bot.sendMessage(msg.chat.id, constant.bot.messages.start);
   } catch (err) {
