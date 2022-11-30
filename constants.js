@@ -41,7 +41,7 @@ module.exports = {
       topics: '🫠 Select all the topics you want to subscribe to:',
       help: 'You can use the following commands:\n/start - Get started\n/status - See your current subscription details\n/lang - Set your preferred language\n/topics - Set all the topics you want to subscribe\n/contribute - Show the contribution guide\n/about - See how this bot works',
       about: '😎 I monitor the announcements from the Sejong University Board periodically.\nEverytime there is a new announcement, I will translate it to your preferred language and send it to you',
-      contribute: 'This bot is created by @steve_immanuel 👋. If you have any idea/feature you want to implement, you can contribute to this bot by sending him a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler\n\nIf you have any questions, you can contact me at:\nKakao: @steveimm\nLine: @steve_immanuel3',
+      contribute: 'This bot is created by @steve_immanuel 👋. If you have any idea/feature you want to implement, you can contribute to this bot by sending a pull request on GitHub.\ngithub.com/SteveImmanuel/sejong-crawler\n\nIf you have any questions, you can contact at:\nKakao: @steveimm\nLine: @steve_immanuel3',
       langChoose: '🌎 Select one of the languages below:',
       langUpdate: 'Language successfully selected 👌',
       topicUpdate: 'Topics successfully updated 👌',
